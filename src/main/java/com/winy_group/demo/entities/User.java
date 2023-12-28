@@ -1,46 +1,58 @@
 package com.winy_group.demo.entities;
 
-import javax.persistence.GenerationType;
-
-
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
-
-
-import javax.persistence.GeneratedValue;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable{
+public class User implements Serializable {
 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @NotNull
+    @Nonnull
     @Size(min = 2, max = 30)
+    @Column(length = 30)
     private String name;
 
-    @NotNull
+    @Nonnull
     @Size(min = 10, max = 50)
+    @Column(length = 50)
     private String email;
 
     @Column(length = 15)
     @Size(min = 12, max = 15)
     private String phone;
 
-    @NotNull
+    @Nonnull
+    @Column(length = 20)
     @Size(min = 5, max = 20)
     private String password;
 
-    public User(Integer id, String name, String email, String phone, String password) {
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+
+    public User() {
+    }
+
+    public User(Long id, String name, String email, String phone, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -48,11 +60,11 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,6 +100,10 @@ public class User implements Serializable{
         this.password = password;
     }
 
+        public List<Order> getOrders() {
+        return orders;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -115,8 +131,9 @@ public class User implements Serializable{
 
     @Override
     public String toString() {
-        return "User == id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password;
+        return "User [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password
+                + ", orders=" + orders + "]";
     }
 
-    
+  
 }

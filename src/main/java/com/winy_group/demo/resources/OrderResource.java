@@ -2,8 +2,8 @@ package com.winy_group.demo.resources;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.winy_group.demo.entities.User;
-import com.winy_group.demo.services.UserServices;
+import com.winy_group.demo.entities.Order;
+import com.winy_group.demo.services.OrderServices;
 
 import jakarta.annotation.Resource;
 
@@ -16,29 +16,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/orders")
 
 @Resource
-public class UserResource {
-
-    // GetMapping faz uma procura geral no banco de dados e retorna o valor. Caso
-    // não tenha nenhum apelido para o metodo escolhido, seu valor será retornado a
-    // partir que o endpoint for chamado
+public class OrderResource {
 
     @Autowired
-    private UserServices services;
+    private OrderServices services;
 
-    // listar todos os usuarios
+    // listar todos os pedidos
     @GetMapping("all")
-    public ResponseEntity<List<User>> findAll() {
-        List<User> result = services.findAll();
+    public ResponseEntity<List<Order>> findAll() {
+        List<Order> result = services.findAll();
         return ResponseEntity.ok().body(result);
     }
 
-     // procurar um usuario
+     // procurar um pedido
     @GetMapping(value = "byId/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        User result = services.findbyId(id);
+    public ResponseEntity<Order> findById(@PathVariable Long id) {
+        Order result = services.findbyId(id);
         return ResponseEntity.ok().body(result);
     }
+
+       // procurar pedidos de um cliente
+
 }
