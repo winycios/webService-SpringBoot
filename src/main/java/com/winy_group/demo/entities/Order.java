@@ -2,6 +2,8 @@ package com.winy_group.demo.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.winy_group.demo.entities.enums.OrderStatus;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +33,9 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
     public Order() {
     }
@@ -77,6 +83,10 @@ public class Order implements Serializable {
         this.client = client;
     }
 
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -106,5 +116,4 @@ public class Order implements Serializable {
     public String toString() {
         return "Order [id=" + id + ", moment=" + moment + ", orderStatus=" + orderStatus + ", client=" + client + "]";
     }
-
 }

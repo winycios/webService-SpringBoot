@@ -2,6 +2,7 @@ package com.winy_group.demo.entities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.winy_group.demo.entities.pk.OrderItemPk;
 
 import jakarta.persistence.EmbeddedId;
@@ -13,21 +14,21 @@ import jakarta.persistence.Table;
 public class OrderItem implements Serializable {
 
     @EmbeddedId
-    private OrderItemPk id;
+    private OrderItemPk id = new OrderItemPk();
     private Integer quantity;
     private Double price;
 
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, OrderItemPk id, Integer quantity, Double price) {
+    public OrderItem(Order order, Product product, Integer quantity, Double price) {
         id.setOrder(order);
         id.setProduct(product);
-        this.id = id;
         this.quantity = quantity;
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return id.getOrder();
     }
@@ -44,13 +45,6 @@ public class OrderItem implements Serializable {
         id.setProduct(product);
     }
 
-    public OrderItemPk getId() {
-        return id;
-    }
-
-    public void setId(OrderItemPk id) {
-        this.id = id;
-    }
 
     public Integer getQuantity() {
         return quantity;
